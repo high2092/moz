@@ -4,7 +4,7 @@ export const RoomUserSection = styled.div`
   width: 15vw;
   height: 100vh;
 
-  padding: 2rem;
+  padding: 0 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

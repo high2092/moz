@@ -32,3 +32,8 @@ export const ChattingSection = styled.div`
 
   background-color: orange;
 `;
+
+export const ChattingBox = styled.div`
+  height: 30vh;
+  overflow: scroll;
+`;
