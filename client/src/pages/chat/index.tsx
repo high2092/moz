@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { initSocket, receiveMessage } from '../../features/mozSlice';
+import { convertPayloadToChat } from '../../../util';
 
 const httpGetRoomList = async () => {
   const response = await fetch('http://localhost:8080/room', { method: 'GET', credentials: 'include' });
@@ -22,7 +23,7 @@ const ChattingPage = () => {
     };
     ws.onmessage = (event) => {
       console.log('Message received:', event.data);
-      dispatch(receiveMessage(event.data));
+      dispatch(receiveMessage(JSON.parse(event.data)));
     };
     ws.onclose = () => {
       console.log('WebSocket connection closed.');
@@ -95,7 +96,7 @@ const ChattingPage = () => {
       <div>
         <div style={{ height: '10rem', background: '#dddddd', overflow: 'scroll' }}>
           {chatList.map((chat, idx) => (
-            <div key={`chat-${idx}`}>{chat}</div>
+            <div key={`chat-${idx}`}>{convertPayloadToChat(chat)}</div>
           ))}
         </div>
         <button onClick={sendMessage}>Send Message</button>

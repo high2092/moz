@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SocketPayload } from '../type/socket';
 
 interface MozState {
   socket: WebSocket;
-  chatList: string[];
+  chatList: SocketPayload[];
 }
 
 const initialState: MozState = {
@@ -19,7 +20,7 @@ export const mozSlice = createSlice({
       state.socket = action.payload;
     },
 
-    receiveMessage(state, action: PayloadAction<string>) {
+    receiveMessage(state, action: PayloadAction<SocketPayload>) {
       state.chatList = [...state.chatList, action.payload];
     },
   },

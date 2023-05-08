@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '../store';
 import * as S from './QuizSection.style';
-import { sendMessage } from '../../util';
+import { convertPayloadToChat, sendMessage } from '../../util';
 
 export const QuizRoomMainSection = () => {
   const { socket, chatList } = useAppSelector((state) => state.moz);
@@ -36,7 +36,7 @@ export const QuizRoomMainSection = () => {
       <S.ChattingSection>
         <S.ChattingBox ref={chattingBoxRef}>
           {chatList.map((chat, idx) => (
-            <div key={`chat-${idx}`}>{chat}</div>
+            <div key={`chat-${idx}`}>{convertPayloadToChat(chat)}</div>
           ))}
         </S.ChattingBox>
         <div>

@@ -10,3 +10,19 @@ export function sendMessage(payload: SocketPayload, socket: WebSocket) {
     socket.send(JSON.stringify(payload));
   }
 }
+
+export function convertPayloadToChat({ type, body, from }: SocketPayload) {
+  switch (type) {
+    case 'chat/local': {
+      return `${from}: ${body}`;
+    }
+
+    case 'system': {
+      return `[system] ${body}`;
+    }
+
+    default: {
+      return `[${type}] ${from}: ${body}`;
+    }
+  }
+}

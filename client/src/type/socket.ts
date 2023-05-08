@@ -1,4 +1,5 @@
 export interface SocketPayload {
-  type: 'chat/local';
+  type: 'chat/local' | 'system';
   body: string;
+  from?: string;
 }
