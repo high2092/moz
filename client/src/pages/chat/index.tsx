@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { initSocket, receiveMessage } from '../../features/mozSlice';
 
 const httpGetRoomList = async () => {
   const response = await fetch('http://localhost:8080/room', { method: 'GET', credentials: 'include' });
@@ -9,8 +11,8 @@ const httpGetRoomList = async () => {
 const ChattingPage = () => {
   const router = useRouter();
 
-  const [socket, setSocket] = useState(null);
-  const [chatList, setChatList] = useState([]);
+  const dispatch = useAppDispatch();
+  const { socket, chatList } = useAppSelector((state) => state.moz);
   const [roomList, setRoomList] = useState([]);
 
   useEffect(() => {
@@ -20,12 +22,12 @@ const ChattingPage = () => {
     };
     ws.onmessage = (event) => {
       console.log('Message received:', event.data);
-      setChatList((chatList) => chatList.concat(event.data));
+      dispatch(receiveMessage(event.data));
     };
     ws.onclose = () => {
       console.log('WebSocket connection closed.');
     };
-    setSocket(ws);
+    dispatch(initSocket(ws));
   }, []);
 
   useEffect(() => {

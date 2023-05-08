@@ -28,9 +28,7 @@ export const QuizSection = styled.div`
 export const ChattingSection = styled.div`
   flex: 1;
 
-  background-color: orange;
+  padding: 1rem;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: orange;
 `;
