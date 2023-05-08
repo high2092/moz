@@ -25,8 +25,18 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<QuizBundle> quizBundles = new ArrayList<>();
 
+    private Long roomId;
+
     public Member(Long oauthId, String name) {
         this.name = name;
         this.oauthId = oauthId;
+    }
+
+    public void enterRoom(Room room) {
+        this.roomId = room.getId();
+    }
+
+    public void leaveRoom() {
+        this.roomId = null;
     }
 }

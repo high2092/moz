@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -42,5 +43,9 @@ public class SecurityUtil {
                 .httpOnly(true)
                 .path("/")
                 .build();
+    }
+
+    public Long getPrincipal(Authentication authentication) {
+        return (Long) authentication.getPrincipal();
     }
 }
