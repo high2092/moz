@@ -1,6 +1,7 @@
 package com.mojac.moz.socket;
 
 import com.mojac.moz.config.SecurityUtil;
+import com.mojac.moz.repository.SocketRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -10,7 +11,6 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -19,13 +19,13 @@ import java.util.List;
 public class ChatHandler extends TextWebSocketHandler {
 
     private final SecurityUtil securityUtil;
-    private List<WebSocketSession> sessions = new ArrayList<>();
+    private final SocketRepository socketRepository;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 
         log.info("connect {}", session);
-        sessions.add(session);
+        socketRepository.save(session);
     }
 
     @Override
@@ -35,6 +35,8 @@ public class ChatHandler extends TextWebSocketHandler {
         String payload = message.getPayload();
         log.info("payload {}", payload);
 
+        List<WebSocketSession> sessions = socketRepository.findAll();
+
         for (WebSocketSession s : sessions) {
             s.sendMessage(new TextMessage("[" + memberId + "] " + payload));
         }
@@ -43,7 +45,7 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         log.info("disconnect {}", session);
-        sessions.remove(session);
+        socketRepository.delete(session);
     }
 
     private Long getPrincipal(WebSocketSession session) {
