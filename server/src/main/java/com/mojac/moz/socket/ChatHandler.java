@@ -1,8 +1,10 @@
 package com.mojac.moz.socket;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mojac.moz.config.SecurityUtil;
+import com.mojac.moz.repository.MemberRepository;
 import com.mojac.moz.repository.SocketRepository;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,8 @@ public class ChatHandler extends TextWebSocketHandler {
 
     private final SecurityUtil securityUtil;
     private final SocketRepository socketRepository;
+    private final MemberRepository memberRepository;
+    private final ObjectMapper objectMapper;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -33,12 +37,13 @@ public class ChatHandler extends TextWebSocketHandler {
         Long memberId = getPrincipal(session);
 
         String payload = message.getPayload();
-        log.info("payload {}", payload);
+        SocketPayload socketPayload = objectMapper.readValue(payload, SocketPayload.class);
+
+        socketPayload.setFrom(memberRepository.findById(memberId).get().getName());
 
         List<WebSocketSession> sessions = socketRepository.findAll();
-
         for (WebSocketSession s : sessions) {
-            s.sendMessage(new TextMessage("[" + memberId + "] " + payload));
+            s.sendMessage(new TextMessage(objectMapper.writeValueAsString(socketPayload)));
         }
     }
 
@@ -74,5 +79,13 @@ public class ChatHandler extends TextWebSocketHandler {
         }
 
         return null;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    static class SocketPayload {
+        private String type;
+        private String body;
+        @Setter private String from;
     }
 }

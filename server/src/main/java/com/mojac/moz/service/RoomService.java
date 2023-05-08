@@ -1,7 +1,9 @@
 package com.mojac.moz.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mojac.moz.domain.Member;
 import com.mojac.moz.domain.Room;
+import com.mojac.moz.domain.SocketPayload;
 import com.mojac.moz.repository.RoomRepository;
 import com.mojac.moz.repository.SocketRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class RoomService {
 
     private final SocketRepository socketRepository;
     private final RoomRepository roomRepository;
+    private final ObjectMapper objectMapper;
 
     @Transactional
     public Long createRoom(String name, int capacity, String password) {
@@ -48,9 +51,11 @@ public class RoomService {
         member.enterRoom(room);
         room.enter(member);
 
+        SocketPayload payload = new SocketPayload("system", member.getName() + " enter room" + room.getId(), "system");
+
         socketRepository.findByRoomId(room.getId()).forEach(s -> {
             try {
-                s.sendMessage(new TextMessage("user " + member.getId() + " enter room " + room.getId()));
+                s.sendMessage(new TextMessage(objectMapper.writeValueAsString(payload)));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -66,10 +71,11 @@ public class RoomService {
         member.leaveRoom();
         room.leave(member);
 
+        SocketPayload payload = new SocketPayload("system", member.getName() + " leave room" + room.getId(), "system");
 
         socketRepository.findByRoomId(room.getId()).forEach(s -> {
             try {
-                s.sendMessage(new TextMessage("user " + member.getId() + " leave room " + room.getId()));
+                s.sendMessage(new TextMessage(objectMapper.writeValueAsString(payload)));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
