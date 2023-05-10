@@ -17,6 +17,7 @@ const ChattingPage = () => {
   const [roomList, setRoomList] = useState([]);
 
   useEffect(() => {
+    if (socket !== null) return;
     const ws = new WebSocket('ws://localhost:8080/my-handler');
     ws.onopen = () => {
       console.log('WebSocket connection established.');
