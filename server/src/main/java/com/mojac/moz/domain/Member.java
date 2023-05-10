@@ -28,8 +28,10 @@ public class Member {
 
     // Transient
     @ManyToOne
+    @JoinColumn(name = "room_id")
     private Room room;
     private Boolean isReady;
+    private int score;
 
     public Member(Long oauthId, String name) {
         this.name = name;

@@ -1,5 +1,6 @@
 package com.mojac.moz.domain;
 
+import com.mojac.moz.domain.quiz.Quiz;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,6 +27,15 @@ public class Room {
 
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
+
+    @ManyToMany
+    @JoinTable(
+            name = "quiz_room",
+            joinColumns = @JoinColumn(name = "room_id"),
+            inverseJoinColumns = @JoinColumn(name = "quiz_id")
+    )
+    private List<Quiz> quizzes;
+    private Long round;
 
     public void enter(Member member) {
         members.add(member);
