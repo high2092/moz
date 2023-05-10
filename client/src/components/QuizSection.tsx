@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { useAppSelector } from '../store';
+import { useAppDispatch, useAppSelector } from '../store';
 import * as S from './QuizSection.style';
-import { convertPayloadToChat, sendMessage } from '../../util';
+import { convertPayloadToChat, httpPostApi, sendMessage } from '../../util';
+import { ready, unready } from '../features/mozSlice';
 
 export const QuizRoomMainSection = () => {
-  const { socket, chatList } = useAppSelector((state) => state.moz);
+  const { socket, chatList, isReady } = useAppSelector((state) => state.moz);
   const [chattingInputValue, setChattingInputValue] = useState('');
   const chattingBoxRef = useRef(null);
 
@@ -32,6 +33,7 @@ export const QuizRoomMainSection = () => {
 
   return (
     <S.QuizRoomMainSection>
+      <div style={{ background: 'green' }}>{isReady ? <UnreadyButton /> : <ReadyButton />}</div>
       <S.QuizSection>문제 영역</S.QuizSection>
       <S.ChattingSection>
         <S.ChattingBox ref={chattingBoxRef}>
@@ -46,3 +48,37 @@ export const QuizRoomMainSection = () => {
     </S.QuizRoomMainSection>
   );
 };
+
+function ReadyButton() {
+  const dispatch = useAppDispatch();
+
+  const handleReadyButtonClick = async () => {
+    const response = await httpPostApi('game/ready');
+
+    if (!response.ok) {
+      console.error(response.statusText);
+      return;
+    }
+
+    dispatch(ready());
+  };
+
+  return <button onClick={handleReadyButtonClick}>READY</button>;
+}
+
+function UnreadyButton() {
+  const dispatch = useAppDispatch();
+
+  const handleUnreadyButtonClick = async () => {
+    const response = await httpPostApi('game/unready');
+
+    if (!response.ok) {
+      console.error(response.statusText);
+      return;
+    }
+
+    dispatch(unready());
+  };
+
+  return <button onClick={handleUnreadyButtonClick}>UNREADY</button>;
+}
