@@ -23,6 +23,7 @@ public abstract class Quiz {
     private Long id;
 
     @OneToMany(
+            fetch = FetchType.EAGER,
             mappedBy = "quiz",
             cascade = CascadeType.ALL
     )

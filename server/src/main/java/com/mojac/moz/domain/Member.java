@@ -55,4 +55,8 @@ public class Member {
     public void unready() {
         isReady = false;
     }
+
+    public void win(int score) {
+        this.score += score;
+    }
 }

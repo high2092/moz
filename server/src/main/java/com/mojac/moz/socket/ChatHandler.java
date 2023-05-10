@@ -5,6 +5,7 @@ import com.mojac.moz.config.SecurityUtil;
 import com.mojac.moz.domain.*;
 import com.mojac.moz.repository.MemberRepository;
 import com.mojac.moz.repository.SocketRepository;
+import com.mojac.moz.service.GameService;
 import com.mojac.moz.service.SocketService;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ public class ChatHandler extends TextWebSocketHandler {
     private final MemberRepository memberRepository;
     private final ObjectMapper objectMapper;
     private final SocketService socketService;
+    private final GameService gameService;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -52,6 +54,8 @@ public class ChatHandler extends TextWebSocketHandler {
             if (roomStatus == RoomStatus.WAIT) {
                 socketPayload.setFrom(member.getName());
                 socketService.sendSocketInRoom(socketPayload, room.getId());
+            } else {
+                gameService.compare(room, socketPayload.getBody(), member);
             }
         }
     }

@@ -5,11 +5,14 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,7 +31,7 @@ public class Room {
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "quiz_room",
             joinColumns = @JoinColumn(name = "room_id"),
@@ -78,13 +81,19 @@ public class Room {
 
     public int compare(String userAnswer) {
         for (Answer answer : getCurrentRoundAnswers()) {
-            if (userAnswer.equals(answer.getAnswer())) return answer.getScore();
+            if (userAnswer.equals(answer.getAnswer())) {
+                return answer.getScore();
+            }
         }
         return 0;
     }
 
-    private List<Answer> getCurrentRoundAnswers() {
-        return this.quizzes.get(this.round - 1).getAnswers();
+    public List<Answer> getCurrentRoundAnswers() {
+        Quiz currentQuiz = this.quizzes.get(this.round - 1);
+        if (currentQuiz != null) {
+            return currentQuiz.getAnswers();
+        }
+        return Collections.emptyList();
     }
 
     public void skipRound() {
