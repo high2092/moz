@@ -1,5 +1,6 @@
 import { useAppSelector } from '../store';
 import { ModalType, ModalTypes } from '../type/modal';
+import { AddQuizModal } from './AddQuizModal';
 import { CreateQuizModal } from './CreateQuizModal';
 
 type ModalComponents = {
@@ -8,6 +9,7 @@ type ModalComponents = {
 
 const ModalComponents: ModalComponents = {
   [ModalTypes.CREATE_QUIZ]: CreateQuizModal,
+  [ModalTypes.ADD_QUIZ]: AddQuizModal,
 };
 
 const DEFAULT_MODAL_Z_INDEX = 1000;

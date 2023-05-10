@@ -15,6 +15,12 @@ export const QuizRoomMainSection = styled.div`
   }
 `;
 
+export const QuizRoomMainSectionTop = styled.div`
+  background: green;
+
+  display: flex;
+`;
+
 export const QuizSection = styled.div`
   flex: 2;
 

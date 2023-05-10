@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../store';
 import { ModalTypes } from '../type/modal';
 import { httpGetApi } from '../util';
 import { fetchQuiz } from '../features/mozSlice';
+import Link from 'next/link';
 
 const fetchQuizList = async () => {
   const response = await httpGetApi('quiz');
@@ -43,6 +44,7 @@ const Home = () => {
         </ul>
       </div>
       <button onClick={handleCreateQuizButtonClick}>퀴즈 생성</button>
+      <Link href="/chat">방 목록으로</Link>
     </div>
   );
 };

@@ -3,8 +3,11 @@ import { useAppDispatch, useAppSelector } from '../store';
 import * as S from './QuizSection.style';
 import { convertPayloadToChat, httpPostApi, sendMessage } from '../util';
 import { ready, unready } from '../features/mozSlice';
+import { openModal } from '../features/modalSlice';
+import { ModalTypes } from '../type/modal';
 
 export const QuizRoomMainSection = () => {
+  const dispatch = useAppDispatch();
   const { socket, chatList, isReady } = useAppSelector((state) => state.moz);
   const [chattingInputValue, setChattingInputValue] = useState('');
   const chattingBoxRef = useRef(null);
@@ -31,9 +34,16 @@ export const QuizRoomMainSection = () => {
     }
   }, [chatList]);
 
+  const handleAddQuizButtonClick = () => {
+    dispatch(openModal(ModalTypes.ADD_QUIZ));
+  };
+
   return (
     <S.QuizRoomMainSection>
-      <div style={{ background: 'green' }}>{isReady ? <UnreadyButton /> : <ReadyButton />}</div>
+      <S.QuizRoomMainSectionTop>
+        {isReady ? <UnreadyButton /> : <ReadyButton />}
+        <button onClick={handleAddQuizButtonClick}>문제 추가</button>
+      </S.QuizRoomMainSectionTop>
       <S.QuizSection>문제 영역</S.QuizSection>
       <S.ChattingSection>
         <S.ChattingBox ref={chattingBoxRef}>
