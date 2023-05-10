@@ -1,6 +1,6 @@
-import { HOST } from './constants';
-import { SocketPayload } from './src/type/socket';
-import { User } from './src/type/user';
+import { HOST } from '../constants';
+import { SocketPayload } from './type/socket';
+import { User } from './type/user';
 
 export function cutUserListInHalf(users: User[]) {
   return [users.filter((user, idx) => idx % 2 === 0), users.filter((user, idx) => idx % 2 === 1)];
@@ -26,6 +26,11 @@ export function convertPayloadToChat({ type, body, from }: SocketPayload) {
       return `[${type}] ${from}: ${body}`;
     }
   }
+}
+
+export async function httpGetApi(path: string) {
+  const response = await fetch(`${HOST}/${path}`, { method: 'GET', credentials: 'include' });
+  return response;
 }
 
 export async function httpPostApi(path: string, payload?: Record<string, any>) {

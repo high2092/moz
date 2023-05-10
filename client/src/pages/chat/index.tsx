@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { initSocket, receiveMessage } from '../../features/mozSlice';
-import { convertPayloadToChat } from '../../../util';
+import { convertPayloadToChat } from '../../util';
 
 const httpGetRoomList = async () => {
   const response = await fetch('http://localhost:8080/room', { method: 'GET', credentials: 'include' });

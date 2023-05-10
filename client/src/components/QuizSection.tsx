@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store';
 import * as S from './QuizSection.style';
-import { convertPayloadToChat, httpPostApi, sendMessage } from '../../util';
+import { convertPayloadToChat, httpPostApi, sendMessage } from '../util';
 import { ready, unready } from '../features/mozSlice';
 
 export const QuizRoomMainSection = () => {
