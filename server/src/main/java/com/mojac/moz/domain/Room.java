@@ -35,7 +35,7 @@ public class Room {
             inverseJoinColumns = @JoinColumn(name = "quiz_id")
     )
     private List<Quiz> quizzes;
-    private Long round;
+    private Integer round;
 
     public void enter(Member member) {
         members.add(member);
@@ -73,6 +73,25 @@ public class Room {
 
     public void startGame() {
         status = RoomStatus.PLAYING;
+        this.round = 1;
+    }
+
+    public int compare(String userAnswer) {
+        for (Answer answer : getCurrentRoundAnswers()) {
+            if (userAnswer.equals(answer.getAnswer())) return answer.getScore();
+        }
+        return 0;
+    }
+
+    private List<Answer> getCurrentRoundAnswers() {
+        return this.quizzes.get(this.round - 1).getAnswers();
+    }
+
+    public void skipRound() {
+        if (this.status != RoomStatus.PLAYING) throw new RuntimeException("게임 진행 중이 아닙니다.");
+        if (this.round == quizzes.size()) throw new RuntimeException("모든 라운드가 종료되었습니다.");
+
+        this.round++;
     }
 
     public void addQuiz(List<Quiz> quizList) {
