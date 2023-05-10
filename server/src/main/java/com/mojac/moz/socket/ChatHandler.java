@@ -2,8 +2,10 @@ package com.mojac.moz.socket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mojac.moz.config.SecurityUtil;
+import com.mojac.moz.domain.*;
 import com.mojac.moz.repository.MemberRepository;
 import com.mojac.moz.repository.SocketRepository;
+import com.mojac.moz.service.SocketService;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +26,7 @@ public class ChatHandler extends TextWebSocketHandler {
     private final SocketRepository socketRepository;
     private final MemberRepository memberRepository;
     private final ObjectMapper objectMapper;
+    private final SocketService socketService;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -35,15 +38,21 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         Long memberId = getPrincipal(session);
+        Member member = memberRepository.findById(memberId).get();
 
         String payload = message.getPayload();
         SocketPayload socketPayload = objectMapper.readValue(payload, SocketPayload.class);
 
-        socketPayload.setFrom(memberRepository.findById(memberId).get().getName());
+        String payloadType = socketPayload.getType();
 
-        List<WebSocketSession> sessions = socketRepository.findAll();
-        for (WebSocketSession s : sessions) {
-            s.sendMessage(new TextMessage(objectMapper.writeValueAsString(socketPayload)));
+        if (payloadType.equals(SocketPayloadType.LOCAL_CHAT.getValue())) {
+            Room room = member.getRoom();
+            RoomStatus roomStatus = room.getStatus();
+
+            if (roomStatus == RoomStatus.WAIT) {
+                socketPayload.setFrom(member.getName());
+                socketService.sendSocketInRoom(socketPayload, room.getId());
+            }
         }
     }
 
@@ -79,13 +88,5 @@ public class ChatHandler extends TextWebSocketHandler {
         }
 
         return null;
-    }
-
-    @Getter
-    @NoArgsConstructor
-    static class SocketPayload {
-        private String type;
-        private String body;
-        @Setter private String from;
     }
 }
