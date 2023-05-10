@@ -74,4 +74,8 @@ public class Room {
     public void startGame() {
         status = RoomStatus.PLAYING;
     }
+
+    public void addQuiz(List<Quiz> quizList) {
+        this.quizzes.addAll(quizList);
+    }
 }

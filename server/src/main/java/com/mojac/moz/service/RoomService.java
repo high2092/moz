@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mojac.moz.domain.Member;
 import com.mojac.moz.domain.Room;
 import com.mojac.moz.domain.SocketPayload;
+import com.mojac.moz.domain.quiz.Quiz;
+import com.mojac.moz.repository.QuizRepository;
 import com.mojac.moz.repository.RoomRepository;
 import com.mojac.moz.repository.SocketRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.web.socket.TextMessage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,7 +26,7 @@ public class RoomService {
     private final SocketRepository socketRepository;
     private final RoomRepository roomRepository;
     private final SocketService socketService;
-    private final ObjectMapper objectMapper;
+    private final QuizRepository quizRepository;
 
     @Transactional
     public Long createRoom(String name, int capacity, String password) {
@@ -74,5 +77,13 @@ public class RoomService {
     public void startGame(Room room) {
         room.startGame();
         socketService.sendSocketInRoom(new SocketPayload("gameStart", "게임 시작!", "system"), room.getId());
+    }
+
+    @Transactional
+    public void addQuiz(Room room, List<Long> quizIdList) {
+        List<Quiz> quizList = quizIdList.stream().map(quizId -> quizRepository.findById(quizId).get()).collect(Collectors.toList()); // TODO: 벌크 쿼리..?
+        room.addQuiz(quizList);
+        SocketPayload payload = new SocketPayload("addQuiz", "퀴즈가 " + quizList.size() + "개 추가되었습니다.", "system");
+        socketService.sendSocketInRoom(payload, room.getId());
     }
 }
