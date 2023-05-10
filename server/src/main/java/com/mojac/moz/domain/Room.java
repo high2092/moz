@@ -1,5 +1,6 @@
 package com.mojac.moz.domain;
 
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,14 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Room {
+    @Id @GeneratedValue
+    @Column(name = "room_id")
     private Long id;
+
     private String name;
     private int capacity;
     private String password;
+
+    @OneToMany(mappedBy = "room")
     private List<Member> members = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
     private RoomStatus status;
 
     public void enter(Member member) {
@@ -41,10 +50,6 @@ public class Room {
         this.capacity = capacity;
         this.password = password;
         this.status = RoomStatus.WAIT;
-    }
-
-    public void register(Long id) {
-        this.id = id;
     }
 
     public boolean checkAllReady() {

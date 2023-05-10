@@ -27,7 +27,8 @@ public class Member {
     private List<QuizBundle> quizBundles = new ArrayList<>();
 
     // Transient
-    private Long roomId;
+    @ManyToOne
+    private Room room;
     private Boolean isReady;
 
     public Member(Long oauthId, String name) {
@@ -37,11 +38,11 @@ public class Member {
     }
 
     public void enterRoom(Room room) {
-        this.roomId = room.getId();
+        this.room = room;
     }
 
     public void leaveRoom() {
-        this.roomId = null;
+        this.room = null;
     }
 
     @Transactional

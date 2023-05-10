@@ -1,6 +1,8 @@
 package com.mojac.moz.repository;
 
 import com.mojac.moz.config.SecurityUtil;
+import com.mojac.moz.domain.Member;
+import com.mojac.moz.domain.Room;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -32,7 +34,11 @@ public class SocketRepository {
 
     public List<WebSocketSession> findByRoomId(Long id) {
         return sessions.stream()
-                .filter(session -> memberRepository.findById(getPrincipal(session)).get().getRoomId() == id)
+                .filter(session -> {
+                    Member member = memberRepository.findById(getPrincipal(session)).get();
+                    Room room = member.getRoom();
+                    return room != null && room.getId() == id;
+                })
                 .collect(Collectors.toList());
     }
 

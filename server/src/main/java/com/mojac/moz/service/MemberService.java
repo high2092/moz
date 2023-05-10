@@ -22,7 +22,7 @@ public class MemberService {
     public void ready(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
 
-        if (member.getRoomId() == null) {
+        if (member.getRoom() == null) {
             throw new RuntimeException();
         }
         if (member.getIsReady() == true) {
@@ -31,9 +31,9 @@ public class MemberService {
 
         member.ready();
 
-        socketService.sendSocketInRoom(new SocketPayload("ready", member.getName() + " 준비", "system"), member.getRoomId());
+        socketService.sendSocketInRoom(new SocketPayload("ready", member.getName() + " 준비", "system"), member.getRoom().getId());
 
-        Room room = roomRepository.findById(member.getRoomId());
+        Room room = member.getRoom();
 
         if (room.checkAllReady()) {
             roomService.startGame(room);
@@ -44,7 +44,7 @@ public class MemberService {
     public void unready(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
 
-        if (member.getRoomId() == null) {
+        if (member.getRoom() == null) {
             throw new RuntimeException();
         }
         if (member.getIsReady() == false) {

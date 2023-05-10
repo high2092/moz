@@ -39,7 +39,7 @@ public class RoomService {
 
     @Transactional(readOnly = true)
     public Room findRoom(Long roomId) {
-        return roomRepository.findById(roomId);
+        return roomRepository.findById(roomId).get();
     }
 
     @Transactional
@@ -58,7 +58,7 @@ public class RoomService {
 
     @Transactional
     public void leaveRoom(Member member) {
-        Room room = roomRepository.findById(member.getRoomId());
+        Room room = member.getRoom();
 
         if (room == null) return;
 
