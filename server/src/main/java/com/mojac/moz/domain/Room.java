@@ -16,6 +16,7 @@ public class Room {
     private int capacity;
     private String password;
     private List<Member> members = new ArrayList<>();
+    private RoomStatus status;
 
     public void enter(Member member) {
         members.add(member);
@@ -39,9 +40,23 @@ public class Room {
         this.name = name;
         this.capacity = capacity;
         this.password = password;
+        this.status = RoomStatus.WAIT;
     }
 
     public void register(Long id) {
         this.id = id;
+    }
+
+    public boolean checkAllReady() {
+        for (Member member : members) {
+            if (member.getIsReady() == false) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void startGame() {
+        status = RoomStatus.PLAYING;
     }
 }

@@ -22,6 +22,7 @@ public class RoomService {
 
     private final SocketRepository socketRepository;
     private final RoomRepository roomRepository;
+    private final SocketService socketService;
     private final ObjectMapper objectMapper;
 
     @Transactional
@@ -52,14 +53,7 @@ public class RoomService {
         room.enter(member);
 
         SocketPayload payload = new SocketPayload("system", member.getName() + " enter room" + room.getId(), "system");
-
-        socketRepository.findByRoomId(room.getId()).forEach(s -> {
-            try {
-                s.sendMessage(new TextMessage(objectMapper.writeValueAsString(payload)));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        socketService.sendSocketInRoom(payload, room.getId());
     }
 
     @Transactional
@@ -72,15 +66,13 @@ public class RoomService {
         room.leave(member);
 
         SocketPayload payload = new SocketPayload("system", member.getName() + " leave room" + room.getId(), "system");
-
-        socketRepository.findByRoomId(room.getId()).forEach(s -> {
-            try {
-                s.sendMessage(new TextMessage(objectMapper.writeValueAsString(payload)));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
+        socketService.sendSocketInRoom(payload, room.getId());
 //        if (room.size() == 0) roomRepository.delete(room);
+    }
+
+    @Transactional
+    public void startGame(Room room) {
+        room.startGame();
+        socketService.sendSocketInRoom(new SocketPayload("gameStart", "게임 시작!", "system"), room.getId());
     }
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +26,14 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<QuizBundle> quizBundles = new ArrayList<>();
 
+    // Transient
     private Long roomId;
+    private Boolean isReady;
 
     public Member(Long oauthId, String name) {
         this.name = name;
         this.oauthId = oauthId;
+        this.isReady = false;
     }
 
     public void enterRoom(Room room) {
@@ -38,5 +42,14 @@ public class Member {
 
     public void leaveRoom() {
         this.roomId = null;
+    }
+
+    @Transactional
+    public void ready() {
+        isReady = true;
+    }
+
+    public void unready() {
+        isReady = false;
     }
 }
