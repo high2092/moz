@@ -96,6 +96,12 @@ public class Room {
         return Collections.emptyList();
     }
 
+    public Quiz getCurrentRoundQuiz() {
+        if (this.round == null) throw new RuntimeException("라운드 정보가 없습니다.");
+        if (this.quizzes.size() == 0) throw new RuntimeException("퀴즈 목록이 비어 있습니다.");
+        return this.quizzes.get(this.round - 1);
+    }
+
     public void skipRound() {
         if (this.status != RoomStatus.PLAYING) throw new RuntimeException("게임 진행 중이 아닙니다.");
         if (this.round == quizzes.size()) throw new RuntimeException("모든 라운드가 종료되었습니다.");

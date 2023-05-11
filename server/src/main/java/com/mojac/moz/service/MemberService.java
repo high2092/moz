@@ -17,6 +17,7 @@ public class MemberService {
     private final RoomRepository roomRepository;
     private final SocketService socketService;
     private final RoomService roomService;
+    private final GameService gameService;
 
     @Transactional
     public void ready(Long memberId) {
@@ -36,7 +37,7 @@ public class MemberService {
         Room room = member.getRoom();
 
         if (room.checkAllReady()) {
-            roomService.startGame(room);
+            gameService.startGame(room);
         }
     }
 

@@ -3,6 +3,9 @@ package com.mojac.moz.service;
 import com.mojac.moz.domain.Member;
 import com.mojac.moz.domain.Room;
 import com.mojac.moz.domain.SocketPayload;
+import com.mojac.moz.domain.SocketPayloadType;
+import com.mojac.moz.domain.quiz.ConsonantQuiz;
+import com.mojac.moz.domain.quiz.Quiz;
 import com.mojac.moz.repository.RoomRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +28,23 @@ public class GameService {
         if (score == 5) {
             member.win(score);
 
-            SocketPayload payload = new SocketPayload("hit", room.getRound() + "R - " + member.getName() + "님이 " + score + "점 획득! (정답: " + answer + ")", "system");
+            SocketPayload payload = new SocketPayload(SocketPayloadType.SYSTEM.getValue(), room.getRound() + "R - " + member.getName() + "님이 " + score + "점 획득! (정답: " + answer + ")", "system");
             socketService.sendSocketInRoom(payload, room.getId());
 
-            Room merge = entityManager.merge(room);
-            merge.skipRound();
+            skipRound(room);
         }
     }
 
+    @Transactional
+    public void startGame(Room room) {
+        room.startGame();
+        socketService.sendGameStart(room);
+    }
+
+    @Transactional
+    public void skipRound(Room room) {
+        room = entityManager.merge(room);
+        room.skipRound();
+        socketService.sendRoundInfo(room);
+    }
 }

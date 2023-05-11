@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mojac.moz.domain.Member;
 import com.mojac.moz.domain.Room;
 import com.mojac.moz.domain.SocketPayload;
+import com.mojac.moz.domain.quiz.ConsonantQuiz;
 import com.mojac.moz.domain.quiz.Quiz;
 import com.mojac.moz.repository.QuizRepository;
 import com.mojac.moz.repository.RoomRepository;
@@ -71,12 +72,6 @@ public class RoomService {
         SocketPayload payload = new SocketPayload("system", member.getName() + " leave room" + room.getId(), "system");
         socketService.sendSocketInRoom(payload, room.getId());
 //        if (room.size() == 0) roomRepository.delete(room);
-    }
-
-    @Transactional
-    public void startGame(Room room) {
-        room.startGame();
-        socketService.sendSocketInRoom(new SocketPayload("gameStart", "게임 시작!", "system"), room.getId());
     }
 
     @Transactional

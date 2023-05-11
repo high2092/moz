@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum SocketPayloadType {
-    LOCAL_CHAT("chat/local");
+    SYSTEM("system"),
+    LOCAL_CHAT("chat/local"),
+    ROUND_INFO("roundInfo");
 
     private final String value;
 }
