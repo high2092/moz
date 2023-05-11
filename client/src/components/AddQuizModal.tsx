@@ -30,10 +30,10 @@ function AddQuizModalContent() {
     <S.AddQuizModal>
       <div>
         {quizList.map((quiz) => {
-          const { id, consonant, answer } = quiz;
+          const { id, question, answer } = quiz;
           return (
             <div key={id} onClick={() => handleQuizClick(quiz)}>
-              {id} {consonant} {answer.answer}
+              {id} {question} {answer.answer}
             </div>
           );
         })}

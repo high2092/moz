@@ -1,5 +1,6 @@
 export const QuizTypes = {
   CONSONANT: 'consonant',
+  MUSIC: 'music',
 } as const;
 
 export type QuizType = (typeof QuizTypes)[keyof typeof QuizTypes];
@@ -7,7 +8,7 @@ export type QuizType = (typeof QuizTypes)[keyof typeof QuizTypes];
 export interface Quiz {
   id?: number;
   type: QuizType;
-  consonant: string;
+  question: string;
   answer?: Answer;
 }
 

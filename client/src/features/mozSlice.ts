@@ -7,7 +7,7 @@ interface MozState {
   chatList: SocketPayload[];
   isReady: boolean;
   quizList: Quiz[];
-  currentRoundInfo: Quiz;
+  currentRoundQuestion: string;
 }
 
 const initialState: MozState = {
@@ -15,7 +15,7 @@ const initialState: MozState = {
   chatList: [],
   isReady: false,
   quizList: [],
-  currentRoundInfo: null,
+  currentRoundQuestion: null,
 };
 
 export const mozSlice = createSlice({
@@ -36,7 +36,7 @@ export const mozSlice = createSlice({
           break;
         }
         case SocketPayloadTypes.ROUND_INFO: {
-          state.currentRoundInfo = { type: QuizTypes.CONSONANT, consonant: action.payload.body };
+          state.currentRoundQuestion = action.payload.body;
           break;
         }
       }

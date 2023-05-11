@@ -8,7 +8,7 @@ import { ModalTypes } from '../type/modal';
 
 export const QuizRoomMainSection = () => {
   const dispatch = useAppDispatch();
-  const { socket, chatList, isReady, currentRoundInfo } = useAppSelector((state) => state.moz);
+  const { socket, chatList, isReady, currentRoundQuestion } = useAppSelector((state) => state.moz);
   const [chattingInputValue, setChattingInputValue] = useState('');
   const chattingBoxRef = useRef(null);
 
@@ -44,7 +44,7 @@ export const QuizRoomMainSection = () => {
         {isReady ? <UnreadyButton /> : <ReadyButton />}
         <button onClick={handleAddQuizButtonClick}>문제 추가</button>
       </S.QuizRoomMainSectionTop>
-      <S.QuizSection>{currentRoundInfo?.consonant}</S.QuizSection>
+      <S.QuizSection>{currentRoundQuestion}</S.QuizSection>
       <S.ChattingSection>
         <S.ChattingBox ref={chattingBoxRef}>
           {chatList.map((chat, idx) => (

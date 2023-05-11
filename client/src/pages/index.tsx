@@ -36,9 +36,9 @@ const Home = () => {
       <div>
         <div>문제 목록</div>
         <ul>
-          {quizList.map(({ id, consonant, answer }) => (
+          {quizList.map(({ id, question, answer }) => (
             <li key={id}>
-              {id} {consonant} {answer.answer}
+              {id} {question} {answer.answer}
             </li>
           ))}
         </ul>
