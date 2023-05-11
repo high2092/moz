@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SocketPayload } from '../type/socket';
-import { Quiz } from '../type/quiz';
+import { SocketPayload, SocketPayloadTypes } from '../type/socket';
+import { Quiz, QuizTypes } from '../type/quiz';
 
 interface MozState {
   socket: WebSocket;
   chatList: SocketPayload[];
   isReady: boolean;
   quizList: Quiz[];
+  currentRoundInfo: Quiz;
 }
 
 const initialState: MozState = {
@@ -14,6 +15,7 @@ const initialState: MozState = {
   chatList: [],
   isReady: false,
   quizList: [],
+  currentRoundInfo: null,
 };
 
 export const mozSlice = createSlice({
@@ -26,7 +28,18 @@ export const mozSlice = createSlice({
     },
 
     receiveMessage(state, action: PayloadAction<SocketPayload>) {
-      state.chatList = [...state.chatList, action.payload];
+      const payload = action.payload;
+      switch (payload.type) {
+        case SocketPayloadTypes.SYSTEM:
+        case SocketPayloadTypes.LOCAL_CHAT: {
+          state.chatList = [...state.chatList, action.payload];
+          break;
+        }
+        case SocketPayloadTypes.ROUND_INFO: {
+          state.currentRoundInfo = { type: QuizTypes.CONSONANT, consonant: action.payload.body };
+          break;
+        }
+      }
     },
 
     ready(state) {

@@ -8,7 +8,7 @@ export interface Quiz {
   id?: number;
   type: QuizType;
   consonant: string;
-  answer: Answer;
+  answer?: Answer;
 }
 
 interface Answer {
