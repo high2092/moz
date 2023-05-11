@@ -15,10 +15,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ConsonantQuiz extends Quiz {
-    private String consonant;
 
-    public ConsonantQuiz(String consonant, List<Answer> answers, Member member) {
-        super(answers, member);
-        this.consonant = consonant;
+    public ConsonantQuiz(String question, List<Answer> answers, Member member) {
+        super(question, answers, member);
     }
 }

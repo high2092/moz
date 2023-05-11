@@ -22,6 +22,8 @@ public abstract class Quiz {
     @Column(name = "quiz_id")
     private Long id;
 
+    private String question;
+
     @OneToMany(
             fetch = FetchType.EAGER,
             mappedBy = "quiz",
@@ -39,7 +41,8 @@ public abstract class Quiz {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public Quiz(List<Answer> answers, Member member) {
+    public Quiz(String question, List<Answer> answers, Member member) {
+        this.question = question;
         this.answers = answers;
         this.member = member;
     }

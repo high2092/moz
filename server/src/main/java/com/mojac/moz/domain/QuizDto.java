@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class QuizDto {
     private Long id;
-    private String consonant;
+    private String question;
     private AnswerDto answer;
 
     public QuizDto(Quiz quiz) {
         this.id = quiz.getId();
-        this.consonant = ((ConsonantQuiz) quiz).getConsonant();
+        this.question = quiz.getQuestion();
         this.answer = new AnswerDto(quiz.getAnswers().get(0));
     }
 }

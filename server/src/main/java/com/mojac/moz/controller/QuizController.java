@@ -6,6 +6,7 @@ import com.mojac.moz.domain.Member;
 import com.mojac.moz.domain.QuizDto;
 import com.mojac.moz.domain.quiz.ConsonantQuiz;
 import com.mojac.moz.domain.quiz.Quiz;
+import com.mojac.moz.domain.quiz.QuizType;
 import com.mojac.moz.repository.MemberRepository;
 import com.mojac.moz.repository.QuizRepository;
 import com.mojac.moz.service.QuizService;
@@ -42,7 +43,8 @@ public class QuizController {
     public CreateQuizResponse createQuiz(@RequestBody CreateQuizRequest request, Authentication authentication) {
         Long memberId = securityUtil.getPrincipal(authentication);
         Member member = memberRepository.findById(memberId).get();
-        Long quizId = quizService.createQuiz(request.getConsonant(), Arrays.asList(new Answer(request.getAnswer(), 5)), member);
+
+        Long quizId = quizService.saveQuiz(request.getType(), request.getQuestion(), Arrays.asList(new Answer(request.getAnswer(), 5)), member);
 
         return new CreateQuizResponse(quizId);
     }
@@ -55,7 +57,8 @@ public class QuizController {
 
     @Getter
     static class CreateQuizRequest {
-        private String consonant;
+        private String type;
+        private String question;
         private String answer;
     }
 

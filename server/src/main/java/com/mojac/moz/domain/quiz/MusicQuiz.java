@@ -15,9 +15,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MusicQuiz extends Quiz {
-    private String videoId;
 
-    public MusicQuiz(List<Answer> answers, Member member) {
-        super(answers, member);
+    public MusicQuiz(String question, List<Answer> answers, Member member) {
+        super(question, answers, member);
     }
 }

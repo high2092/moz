@@ -15,9 +15,4 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ImageQuiz extends Quiz {
-    private String url;
-
-    public ImageQuiz(List<Answer> answers, Member member) {
-        super(answers, member);
-    }
 }
