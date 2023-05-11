@@ -9,11 +9,11 @@ interface RoomUserSectionProps {
 export const RoomUserSection = ({ users }: RoomUserSectionProps) => {
   return (
     <S.RoomUserSection>
-      {users.slice(0, MAX_CAPACITY / 2).map((user) => (
-        <RoomUser user={user} />
+      {users.slice(0, MAX_CAPACITY / 2).map((user, idx) => (
+        <RoomUser key={`user-${user}-${idx}`} user={user} />
       ))}
-      {Array.from({ length: MAX_CAPACITY / 2 - users.length }).map(() => (
-        <S.RoomUser />
+      {Array.from({ length: MAX_CAPACITY / 2 - users.length }).map((user, idx) => (
+        <S.RoomUser key={`user-${user}-${idx}`} />
       ))}
     </S.RoomUserSection>
   );

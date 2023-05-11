@@ -1,1 +1,1 @@
-export type User = number;
+export type User = number; // TODO
