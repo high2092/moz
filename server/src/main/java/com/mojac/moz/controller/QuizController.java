@@ -48,6 +48,11 @@ public class QuizController {
         return new CreateQuizResponse(quizId);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteQuiz(@PathVariable Long id) {
+        quizService.deleteQuiz(id);
+    }
+
     @Getter
     @AllArgsConstructor
     static class GetQuizListResponse {
