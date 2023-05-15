@@ -1,6 +1,10 @@
 package com.mojac.moz.domain;
 
 import com.mojac.moz.domain.quiz.Quiz;
+import com.mojac.moz.exception.internal.AllRoundEndedException;
+import com.mojac.moz.exception.internal.NoRoundExistsException;
+import com.mojac.moz.exception.internal.QuizListEmptyException;
+import com.mojac.moz.exception.internal.RoomStatusIsNotPlayingException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -97,14 +101,14 @@ public class Room {
     }
 
     public Quiz getCurrentRoundQuiz() {
-        if (this.round == null) throw new RuntimeException("라운드 정보가 없습니다.");
-        if (this.quizzes.size() == 0) throw new RuntimeException("퀴즈 목록이 비어 있습니다.");
+        if (this.round == null) throw new NoRoundExistsException();
+        if (this.quizzes.size() == 0) throw new QuizListEmptyException();
         return this.quizzes.get(this.round - 1);
     }
 
     public void skipRound() {
-        if (this.status != RoomStatus.PLAYING) throw new RuntimeException("게임 진행 중이 아닙니다.");
-        if (this.round == quizzes.size()) throw new RuntimeException("모든 라운드가 종료되었습니다.");
+        if (this.status != RoomStatus.PLAYING) throw new RoomStatusIsNotPlayingException();
+        if (this.round == quizzes.size()) throw new AllRoundEndedException();
 
         this.round++;
     }

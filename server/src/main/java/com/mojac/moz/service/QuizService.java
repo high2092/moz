@@ -4,6 +4,7 @@ import com.mojac.moz.domain.Answer;
 import com.mojac.moz.domain.Member;
 import com.mojac.moz.domain.quiz.Quiz;
 import com.mojac.moz.domain.quiz.QuizType;
+import com.mojac.moz.exception.api.InvalidQuizTypeException;
 import com.mojac.moz.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class QuizService {
             return new Quiz(question, answers, member, QuizType.MUSIC);
         }
 
-        throw new RuntimeException("유효한 퀴즈 타입이 아닙니다: " + type);
+        throw new InvalidQuizTypeException();
     }
 
     @Transactional

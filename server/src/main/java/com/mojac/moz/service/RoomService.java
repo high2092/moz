@@ -5,6 +5,8 @@ import com.mojac.moz.domain.Member;
 import com.mojac.moz.domain.Room;
 import com.mojac.moz.domain.SocketPayload;
 import com.mojac.moz.domain.quiz.Quiz;
+import com.mojac.moz.exception.api.RoomIsFullException;
+import com.mojac.moz.exception.api.WrongPasswordException;
 import com.mojac.moz.repository.QuizRepository;
 import com.mojac.moz.repository.RoomRepository;
 import com.mojac.moz.repository.SocketRepository;
@@ -47,8 +49,8 @@ public class RoomService {
 
     @Transactional
     public void enterRoom(Member member, Room room, String password) {
-        if (room.size() == room.getCapacity()) throw new RuntimeException();
-        if (password != null && !password.equals(room.getPassword())) throw new RuntimeException();
+        if (room.size() == room.getCapacity()) throw new RoomIsFullException();
+        if (password != null && !password.equals(room.getPassword())) throw new WrongPasswordException();
 
         leaveRoom(member);
 
