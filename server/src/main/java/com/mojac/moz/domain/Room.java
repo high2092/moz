@@ -116,4 +116,8 @@ public class Room {
     public void addQuiz(List<Quiz> quizList) {
         this.quizzes.addAll(quizList);
     }
+
+    public void gameOver() {
+        this.status = RoomStatus.WAIT;
+    }
 }

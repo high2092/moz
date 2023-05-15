@@ -9,7 +9,8 @@ public enum SocketPayloadType {
     SYSTEM("system"),
     LOCAL_CHAT("chat/local"),
     ROUND_INFO("roundInfo"),
-    MUSIC_QUIZ("quiz/music");
+    MUSIC_QUIZ("quiz/music"),
+    GAME_OVER("gameOver");
 
     private final String value;
 }
