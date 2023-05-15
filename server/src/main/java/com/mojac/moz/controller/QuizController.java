@@ -2,6 +2,7 @@ package com.mojac.moz.controller;
 
 import com.mojac.moz.config.SecurityUtil;
 import com.mojac.moz.domain.Answer;
+import com.mojac.moz.domain.AnswerDto;
 import com.mojac.moz.domain.Member;
 import com.mojac.moz.domain.QuizDto;
 import com.mojac.moz.domain.quiz.Quiz;
@@ -43,7 +44,11 @@ public class QuizController {
         Long memberId = securityUtil.getPrincipal(authentication);
         Member member = memberRepository.findById(memberId).get();
 
-        Long quizId = quizService.saveQuiz(request.getType(), request.getQuestion(), Arrays.asList(new Answer(request.getAnswer(), 5)), member);
+        List<Answer> answers = request.getAnswers().stream()
+                .map((answerDto -> new Answer(answerDto.getAnswer(), answerDto.getScore())))
+                .collect(Collectors.toList());
+
+        Long quizId = quizService.saveQuiz(request.getType(), request.getQuestion(), answers, member);
 
         return new CreateQuizResponse(quizId);
     }
@@ -63,7 +68,7 @@ public class QuizController {
     static class CreateQuizRequest {
         private String type;
         private String question;
-        private String answer;
+        private List<AnswerDto> answers;
     }
 
     @Getter
