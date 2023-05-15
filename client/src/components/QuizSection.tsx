@@ -5,10 +5,11 @@ import { convertPayloadToChat, httpPostApi, sendMessage } from '../util';
 import { ready, unready } from '../features/mozSlice';
 import { openModal } from '../features/modalSlice';
 import { ModalTypes } from '../type/modal';
+import { Quiz, QuizTypes } from '../type/quiz';
 
 export const QuizRoomMainSection = () => {
   const dispatch = useAppDispatch();
-  const { socket, chatList, isReady, currentRoundQuestion } = useAppSelector((state) => state.moz);
+  const { socket, chatList, isReady, currentRoundQuiz } = useAppSelector((state) => state.moz);
   const [chattingInputValue, setChattingInputValue] = useState('');
   const chattingBoxRef = useRef(null);
 
@@ -44,7 +45,7 @@ export const QuizRoomMainSection = () => {
         {isReady ? <UnreadyButton /> : <ReadyButton />}
         <button onClick={handleAddQuizButtonClick}>문제 추가</button>
       </S.QuizRoomMainSectionTop>
-      <S.QuizSection>{currentRoundQuestion}</S.QuizSection>
+      <QuizSection quiz={currentRoundQuiz} />
       <S.ChattingSection>
         <S.ChattingBox ref={chattingBoxRef}>
           {chatList.map((chat, idx) => (
@@ -58,6 +59,23 @@ export const QuizRoomMainSection = () => {
     </S.QuizRoomMainSection>
   );
 };
+
+interface QuizSectionProps {
+  quiz?: Quiz;
+}
+
+function QuizSection({ quiz }: QuizSectionProps) {
+  if (quiz === null) return <S.QuizSection />;
+
+  switch (quiz.type) {
+    case QuizTypes.MUSIC: {
+      return <S.QuizSection>재생되는 음악을 듣고 정답을 맞혀주세요</S.QuizSection>;
+    }
+    default: {
+      return <S.QuizSection>{quiz.question}</S.QuizSection>;
+    }
+  }
+}
 
 function ReadyButton() {
   const dispatch = useAppDispatch();
