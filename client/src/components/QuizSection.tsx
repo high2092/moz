@@ -6,6 +6,7 @@ import { ready, unready } from '../features/mozSlice';
 import { openModal } from '../features/modalSlice';
 import { ModalTypes } from '../type/modal';
 import { Quiz, QuizTypes } from '../type/quiz';
+import YouTube from 'react-youtube';
 
 export const QuizRoomMainSection = () => {
   const dispatch = useAppDispatch();
@@ -69,7 +70,12 @@ function QuizSection({ quiz }: QuizSectionProps) {
 
   switch (quiz.type) {
     case QuizTypes.MUSIC: {
-      return <S.QuizSection>재생되는 음악을 듣고 정답을 맞혀주세요</S.QuizSection>;
+      return (
+        <S.QuizSection>
+          <div>재생되는 음악을 듣고 정답을 맞혀주세요</div>
+          <YouTube style={{ display: 'none' }} videoId={quiz.question} opts={{ playerVars: { autoplay: 1 } }} onEnd={(e) => e.target.playVideo()} />
+        </S.QuizSection>
+      );
     }
     default: {
       return <S.QuizSection>{quiz.question}</S.QuizSection>;
