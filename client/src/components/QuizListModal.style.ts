@@ -8,3 +8,10 @@ export const QuizListModal = styled.div`
 
   border-radius: ${MODAL_DEFAULT_BORDER_RADIUS};
 `;
+
+export const DeleteButton = styled.div`
+  color: #820000;
+  font-size: 0.8rem;
+
+  cursor: pointer;
+`;

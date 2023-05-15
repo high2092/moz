@@ -44,3 +44,8 @@ export async function httpPostApi(path: string, payload?: Record<string, any>) {
   });
   return response;
 }
+
+export async function httpDeleteApi(path: string) {
+  const response = await fetch(`${HOST}/${path}`, { method: 'DELETE', credentials: 'include' });
+  return response;
+}

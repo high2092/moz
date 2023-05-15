@@ -61,7 +61,11 @@ export const mozSlice = createSlice({
     addQuiz(state, action: PayloadAction<Quiz>) {
       state.quizList.push(action.payload);
     },
+
+    removeQuiz(state, action: PayloadAction<number>) {
+      state.quizList = state.quizList.filter(({ id }) => id !== action.payload);
+    },
   },
 });
 
-export const { initSocket, receiveMessage, ready, unready, fetchQuiz, addQuiz } = mozSlice.actions;
+export const { initSocket, receiveMessage, ready, unready, fetchQuiz, addQuiz, removeQuiz } = mozSlice.actions;
