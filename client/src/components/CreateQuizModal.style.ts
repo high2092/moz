@@ -15,3 +15,11 @@ export const CreateQuizForm = styled.form`
   display: flex;
   flex-direction: column;
 `;
+
+export const AnswerScoreInputRow = styled.div`
+  display: flex;
+`;
+
+export const AnswerRemoveButton = styled.div`
+  width: 4.1rem;
+`;

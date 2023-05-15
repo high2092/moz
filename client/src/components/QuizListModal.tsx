@@ -32,11 +32,11 @@ export const QuizListModalContent = () => {
     <S.QuizListModal>
       <div style={{ height: '60vh', overflow: 'scroll' }}>
         {quizList.map((quiz) => {
-          const { id, question, answer } = quiz;
+          const { id, question, answers } = quiz;
           return (
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div key={id}>
-                {id} {question} {answer.answer}
+                {id} {question} {answers[0].answer}
               </div>
               <S.DeleteButton onClick={() => handleDeleteButtonClick(id)}>삭제</S.DeleteButton>
             </div>

@@ -3,7 +3,7 @@ import { PreparedModalProps } from '../type/modal';
 import { Quiz, QuizType, QuizTypes } from '../type/quiz';
 import * as S from './CreateQuizModal.style';
 import { CenteredModal } from './Modal';
-import { useForm, FieldValues } from 'react-hook-form';
+import { useForm, FieldValues, useFieldArray } from 'react-hook-form';
 import { useAppDispatch } from '../store';
 import { addQuiz } from '../features/mozSlice';
 import { RadioGroup } from './RadioGroup';
@@ -15,7 +15,8 @@ export const CreateQuizModal = ({ zIndex }: PreparedModalProps) => {
 
 function CreateQuizModalContent() {
   const dispatch = useAppDispatch();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, control } = useForm();
+  const { fields, append, remove } = useFieldArray({ control, name: 'answers' });
 
   const [quizType, setQuizType] = useState<QuizType>(QuizTypes.CONSONANT);
 
@@ -29,15 +30,19 @@ function CreateQuizModalContent() {
   };
 
   const handleCreateQuiz = async (formData: FieldValues) => {
-    const { consonant, videoId, answer } = formData;
-    const quiz: Quiz = { type: quizType, question: getQuestion(quizType, { consonant, videoId }), answer };
+    const { consonant, videoId } = formData;
+    const answers = [formData.defaultAnswer, ...formData.answers];
+    const quiz: Quiz = { type: quizType, question: getQuestion(quizType, { consonant, videoId }), answers };
     const response = await httpPostApi('quiz', quiz);
+
     if (!response.ok) {
       console.error(response.statusText);
       return;
     }
 
-    dispatch(addQuiz(quiz));
+    const { id } = await response.json();
+
+    dispatch(addQuiz({ ...quiz, id }));
   };
 
   return (
@@ -54,7 +59,30 @@ function CreateQuizModalContent() {
         />
         {quizType === QuizTypes.CONSONANT && <input {...register('consonant')} placeholder="초성" />}
         {quizType === QuizTypes.MUSIC && <input {...register('videoId')} placeholder="비디오 ID" />}
-        <input {...register('answer')} placeholder="정답" />
+
+        <S.AnswerScoreInputRow>
+          <input {...register(`defaultAnswer.answer`)} placeholder="정답" />
+          <input {...register(`defaultAnswer.score`)} placeholder="점수" />
+          <S.AnswerRemoveButton />
+        </S.AnswerScoreInputRow>
+
+        {fields.map((field, index) => (
+          <div key={field.id}>
+            <S.AnswerScoreInputRow>
+              <input {...register(`answers.${index}.answer`)} placeholder={`정답${index + 2}`} />
+              <input {...register(`answers.${index}.score`)} placeholder="점수" />
+              <S.AnswerRemoveButton>
+                <button type="button" onClick={() => remove(index)}>
+                  Remove
+                </button>
+              </S.AnswerRemoveButton>
+            </S.AnswerScoreInputRow>
+          </div>
+        ))}
+        <button type="button" onClick={() => append('')}>
+          정답 추가
+        </button>
+
         <button>퀴즈 생성</button>
       </S.CreateQuizForm>
     </S.CreateQuizModal>

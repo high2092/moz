@@ -9,7 +9,7 @@ export interface Quiz {
   id?: number;
   type: QuizType;
   question: string;
-  answer?: Answer;
+  answers?: Answer[];
 }
 
 interface Answer {
