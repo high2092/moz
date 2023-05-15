@@ -4,7 +4,6 @@ import com.mojac.moz.domain.Member;
 import com.mojac.moz.domain.Room;
 import com.mojac.moz.domain.SocketPayload;
 import com.mojac.moz.domain.SocketPayloadType;
-import com.mojac.moz.domain.quiz.ConsonantQuiz;
 import com.mojac.moz.domain.quiz.Quiz;
 import com.mojac.moz.repository.RoomRepository;
 import jakarta.persistence.EntityManager;

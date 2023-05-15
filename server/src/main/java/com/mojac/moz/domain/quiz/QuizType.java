@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum QuizType {
     CONSONANT("consonant"),
-    MUSIC("music");
+    MUSIC("music"),
+    IMAGE("image");
 
     private final String value;
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mojac.moz.domain.Room;
 import com.mojac.moz.domain.SocketPayload;
 import com.mojac.moz.domain.SocketPayloadType;
-import com.mojac.moz.domain.quiz.ConsonantQuiz;
 import com.mojac.moz.domain.quiz.Quiz;
 import com.mojac.moz.repository.SocketRepository;
 import lombok.RequiredArgsConstructor;

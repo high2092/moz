@@ -4,7 +4,6 @@ import com.mojac.moz.config.SecurityUtil;
 import com.mojac.moz.domain.Answer;
 import com.mojac.moz.domain.Member;
 import com.mojac.moz.domain.QuizDto;
-import com.mojac.moz.domain.quiz.ConsonantQuiz;
 import com.mojac.moz.domain.quiz.Quiz;
 import com.mojac.moz.domain.quiz.QuizType;
 import com.mojac.moz.repository.MemberRepository;

@@ -2,8 +2,6 @@ package com.mojac.moz.service;
 
 import com.mojac.moz.domain.Answer;
 import com.mojac.moz.domain.Member;
-import com.mojac.moz.domain.quiz.ConsonantQuiz;
-import com.mojac.moz.domain.quiz.MusicQuiz;
 import com.mojac.moz.domain.quiz.Quiz;
 import com.mojac.moz.domain.quiz.QuizType;
 import com.mojac.moz.repository.QuizRepository;
@@ -29,9 +27,9 @@ public class QuizService {
 
     public Quiz createQuiz(String type, String question, List<Answer> answers, Member member) {
         if (type.equals(QuizType.CONSONANT.getValue())) {
-            return new ConsonantQuiz(question, answers, member);
+            return new Quiz(question, answers, member, QuizType.CONSONANT);
         } else if (type.equals(QuizType.MUSIC.getValue())) {
-            return new MusicQuiz(question, answers, member);
+            return new Quiz(question, answers, member, QuizType.MUSIC);
         }
 
         throw new RuntimeException("유효한 퀴즈 타입이 아닙니다: " + type);

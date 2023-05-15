@@ -13,14 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class Quiz {
+public class Quiz {
     @Id @GeneratedValue
     @Column(name = "quiz_id")
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private QuizType type;
 
     private String question;
 
@@ -41,9 +42,10 @@ public abstract class Quiz {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public Quiz(String question, List<Answer> answers, Member member) {
+    public Quiz(String question, List<Answer> answers, Member member, QuizType type) {
         this.question = question;
         this.answers = answers;
         this.member = member;
+        this.type = type;
     }
 }
