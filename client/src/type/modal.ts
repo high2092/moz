@@ -1,6 +1,7 @@
 export const ModalTypes = {
   CREATE_QUIZ: 'createQuiz',
   ADD_QUIZ: 'addQuiz',
+  QUIZ_LIST: 'quizList',
 } as const;
 
 export type ModalType = (typeof ModalTypes)[keyof typeof ModalTypes];

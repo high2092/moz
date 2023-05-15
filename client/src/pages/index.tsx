@@ -20,30 +20,15 @@ const fetchQuizList = async () => {
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const { quizList } = useAppSelector((state) => state.moz);
 
   useEffect(() => {
     fetchQuizList().then((quizList) => dispatch(fetchQuiz(quizList)));
   }, []);
 
-  const handleCreateQuizButtonClick = () => {
-    dispatch(openModal(ModalTypes.CREATE_QUIZ));
-  };
-
   return (
     <div>
       <h1>MOZ</h1>
-      <div>
-        <div>문제 목록</div>
-        <ul>
-          {quizList.map(({ id, question, answer }) => (
-            <li key={id}>
-              {id} {question} {answer.answer}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <button onClick={handleCreateQuizButtonClick}>퀴즈 생성</button>
+      <button onClick={() => dispatch(openModal(ModalTypes.QUIZ_LIST))}>퀴즈 목록</button>
       <Link href="/chat">방 목록으로</Link>
     </div>
   );
