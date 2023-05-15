@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum SocketPayloadType {
     SYSTEM("system"),
     LOCAL_CHAT("chat/local"),
-    ROUND_INFO("roundInfo");
+    ROUND_INFO("roundInfo"),
+    MUSIC_QUIZ("quiz/music");
 
     private final String value;
 }

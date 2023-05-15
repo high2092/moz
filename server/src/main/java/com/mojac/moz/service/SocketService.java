@@ -5,6 +5,7 @@ import com.mojac.moz.domain.Room;
 import com.mojac.moz.domain.SocketPayload;
 import com.mojac.moz.domain.SocketPayloadType;
 import com.mojac.moz.domain.quiz.Quiz;
+import com.mojac.moz.domain.quiz.QuizType;
 import com.mojac.moz.repository.SocketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,10 +32,21 @@ public class SocketService {
 
     public void sendRoundInfo(Room room) {
         Quiz quiz = room.getCurrentRoundQuiz();
+        QuizType type = quiz.getType();
+
+
         SocketPayload payload1 = new SocketPayload(SocketPayloadType.SYSTEM.getValue(), "라운드 " + room.getRound() + " 시작!", "system");
-        SocketPayload payload2 = new SocketPayload(SocketPayloadType.ROUND_INFO.getValue(), quiz.getQuestion(), "system");
+
+        SocketPayloadType quizPayloadType = getQuizPayloadType(type);
+        SocketPayload payload2 = new SocketPayload(quizPayloadType.getValue(), quiz.getQuestion(), "system");
+
         sendSocketInRoom(payload1, room.getId());
         sendSocketInRoom(payload2, room.getId());
+    }
+
+    private SocketPayloadType getQuizPayloadType(QuizType type) {
+        if (type == QuizType.MUSIC) return SocketPayloadType.MUSIC_QUIZ;
+        return SocketPayloadType.ROUND_INFO;
     }
 
     public void sendGameStart(Room room) {
