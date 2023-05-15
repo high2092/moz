@@ -43,6 +43,11 @@ export const mozSlice = createSlice({
           state.currentRoundQuiz = { type: QuizTypes.CONSONANT, question: action.payload.body };
           break;
         }
+        case SocketPayloadTypes.GAME_OVER: {
+          state.isReady = false;
+          state.chatList = [...state.chatList, action.payload];
+          break;
+        }
       }
     },
 
