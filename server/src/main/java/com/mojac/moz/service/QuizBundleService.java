@@ -19,6 +19,11 @@ public class QuizBundleService {
     private final QuizRepository quizRepository;
     private final QuizBundleRepository quizBundleRepository;
 
+    @Transactional(readOnly = true)
+    public List<QuizBundle> findQuizBundlesOfMember(Member member) {
+        return quizBundleRepository.findAllByMember(member);
+    }
+
     @Transactional
     public Long createQuizBundle(String title, List<Long> quizIdList, Member member) {
         List<Quiz> quizzes = quizIdList.stream().map(id -> quizRepository.findById(id).get()).collect(Collectors.toList());
