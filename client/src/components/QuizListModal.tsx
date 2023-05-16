@@ -5,9 +5,20 @@ import { ModalTypes, PreparedModalProps } from '../type/modal';
 import { CenteredModal } from './Modal';
 import { httpDeleteApi } from '../util';
 import { removeQuiz, toggleSelectQuiz } from '../features/mozSlice';
+import { QuizBundleListModalContent } from './QuizBundleListModal';
 
 export const QuizListModal = ({ zIndex }: PreparedModalProps) => {
-  return <CenteredModal content={<QuizListModalContent />} zIndex={zIndex} />;
+  return (
+    <CenteredModal
+      content={
+        <div style={{ display: 'flex' }}>
+          <QuizListModalContent />
+          <QuizBundleListModalContent />
+        </div>
+      }
+      zIndex={zIndex}
+    />
+  );
 };
 
 export const QuizListModalContent = () => {

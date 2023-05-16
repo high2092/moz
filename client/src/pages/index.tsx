@@ -3,10 +3,10 @@ import { openModal } from '../features/modalSlice';
 import { useAppDispatch, useAppSelector } from '../store';
 import { ModalTypes } from '../type/modal';
 import { httpGetApi } from '../util';
-import { fetchQuiz } from '../features/mozSlice';
+import { fetchQuiz, fetchQuizBundleList } from '../features/mozSlice';
 import Link from 'next/link';
 
-const fetchQuizList = async () => {
+const httpGetQuizList = async () => {
   const response = await httpGetApi('quiz');
   if (!response.ok) {
     console.error(response.statusText);
@@ -14,15 +14,29 @@ const fetchQuizList = async () => {
   }
 
   const { quizList } = await response.json();
-
   return quizList;
 };
+
+async function httpGetQuizBundleList() {
+  const response = await httpGetApi('quiz-bundle');
+  if (!response.ok) {
+    console.error(response.statusText);
+    return null;
+  }
+
+  const { quizBundleList } = await response.json();
+  return quizBundleList;
+}
 
 const Home = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    fetchQuizList().then((quizList) => dispatch(fetchQuiz(quizList)));
+    httpGetQuizList().then((quizList) => dispatch(fetchQuiz(quizList)));
+  }, []);
+
+  useEffect(() => {
+    httpGetQuizBundleList().then((quizBundleList) => dispatch(fetchQuizBundleList(quizBundleList)));
   }, []);
 
   return (

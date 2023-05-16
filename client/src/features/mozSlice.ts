@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SocketPayload, SocketPayloadTypes } from '../type/socket';
 import { Quiz, QuizTypes } from '../type/quiz';
+import { QuizBundle } from '../type/quizBundle';
 
 interface MozState {
   socket: WebSocket;
@@ -8,6 +9,7 @@ interface MozState {
   isReady: boolean;
   quizList: Quiz[];
   currentRoundQuiz: Quiz;
+  quizBundleList: QuizBundle[];
 }
 
 const initialState: MozState = {
@@ -16,6 +18,7 @@ const initialState: MozState = {
   isReady: false,
   quizList: [],
   currentRoundQuiz: null,
+  quizBundleList: [],
 };
 
 export const mozSlice = createSlice({
@@ -75,7 +78,11 @@ export const mozSlice = createSlice({
       const target = state.quizList.find(({ id }) => id === action.payload);
       target.selected = !target.selected;
     },
+
+    fetchQuizBundleList(state, action: PayloadAction<QuizBundle[]>) {
+      state.quizBundleList = action.payload;
+    },
   },
 });
 
-export const { initSocket, receiveMessage, ready, unready, fetchQuiz, addQuiz, removeQuiz, toggleSelectQuiz } = mozSlice.actions;
+export const { initSocket, receiveMessage, ready, unready, fetchQuiz, addQuiz, removeQuiz, toggleSelectQuiz, fetchQuizBundleList } = mozSlice.actions;
