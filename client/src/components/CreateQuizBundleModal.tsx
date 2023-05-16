@@ -10,10 +10,10 @@ export const CreateQuizBundleModal = ({ zIndex }: PreparedModalProps) => {
 };
 
 function CreateQuizBundleModalContent() {
-  const { quizList } = useAppSelector((state) => state.moz);
+  const { quizzes } = useAppSelector((state) => state.moz);
   const { register, handleSubmit } = useForm();
 
-  const selectedQuizList = quizList.filter(({ selected }) => selected); // TODO: createSelector
+  const selectedQuizList = Object.values(quizzes).filter(({ selected }) => selected); // TODO: createSelector
 
   const handleQuizCreateQuizBundle = async ({ title }: FieldValues) => {
     const response = await httpPostApi('quiz-bundle', { title, quizzes: selectedQuizList.map(({ id }) => id) });
@@ -29,7 +29,7 @@ function CreateQuizBundleModalContent() {
         <div>
           <input {...register('title')} placeholder="문제집 이름" />
           <div>
-            {selectedQuizList[0].answers[0].answer} 외 {quizList.length - 1}개
+            {selectedQuizList[0].answers[0].answer} 외 {selectedQuizList.length - 1}개
           </div>
         </div>
         <button>만들기</button>

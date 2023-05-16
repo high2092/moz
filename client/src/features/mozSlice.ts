@@ -7,18 +7,18 @@ interface MozState {
   socket: WebSocket;
   chatList: SocketPayload[];
   isReady: boolean;
-  quizList: Quiz[];
+  quizzes: Record<number, Quiz>;
   currentRoundQuiz: Quiz;
-  quizBundleList: QuizBundle[];
+  quizBundles: Record<number, QuizBundle>;
 }
 
 const initialState: MozState = {
   socket: null,
   chatList: [],
   isReady: false,
-  quizList: [],
+  quizzes: {},
   currentRoundQuiz: null,
-  quizBundleList: [],
+  quizBundles: {},
 };
 
 export const mozSlice = createSlice({
@@ -63,24 +63,29 @@ export const mozSlice = createSlice({
     },
 
     fetchQuiz(state, action: PayloadAction<Quiz[]>) {
-      state.quizList = action.payload;
+      action.payload.forEach((quiz) => {
+        state.quizzes[quiz.id] = quiz;
+      });
     },
 
     addQuiz(state, action: PayloadAction<Quiz>) {
-      state.quizList.push(action.payload);
+      const quiz = action.payload;
+      state.quizzes[quiz.id] = quiz;
     },
 
     removeQuiz(state, action: PayloadAction<number>) {
-      state.quizList = state.quizList.filter(({ id }) => id !== action.payload);
+      delete state.quizzes[action.payload];
     },
 
     toggleSelectQuiz(state, action: PayloadAction<number>) {
-      const target = state.quizList.find(({ id }) => id === action.payload);
+      const target = state.quizzes[action.payload];
       target.selected = !target.selected;
     },
 
     fetchQuizBundleList(state, action: PayloadAction<QuizBundle[]>) {
-      state.quizBundleList = action.payload;
+      action.payload.forEach((quizBundle) => {
+        state.quizBundles[quizBundle.id] = quizBundle;
+      });
     },
   },
 });

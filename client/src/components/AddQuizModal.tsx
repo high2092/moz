@@ -11,7 +11,7 @@ export const AddQuizModal = ({ zIndex }: PreparedModalProps) => {
 };
 
 function AddQuizModalContent() {
-  const { quizList } = useAppSelector((state) => state.moz);
+  const { quizzes } = useAppSelector((state) => state.moz);
   const [addQuizList, setAddQuizList] = useState<Quiz[]>([]);
 
   const handleQuizClick = (quiz: Quiz) => {
@@ -29,7 +29,7 @@ function AddQuizModalContent() {
   return (
     <S.AddQuizModal>
       <div>
-        {quizList.map((quiz) => {
+        {Object.values(quizzes).map((quiz) => {
           const { id, question, answers } = quiz;
           return (
             <div key={id} onClick={() => handleQuizClick(quiz)}>
