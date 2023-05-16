@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../store';
 import { ModalTypes, PreparedModalProps } from '../type/modal';
 import { CenteredModal } from './Modal';
 import { httpDeleteApi } from '../util';
-import { removeQuiz, toggleSelectQuiz } from '../features/mozSlice';
+import { removeQuiz, selectAll, toggleSelectQuiz } from '../features/mozSlice';
 import { QuizBundleListModalContent } from './QuizBundleListModal';
 
 export const QuizListModal = ({ zIndex }: PreparedModalProps) => {
@@ -50,6 +50,10 @@ export const QuizListModalContent = () => {
     dispatch(openModal(ModalTypes.CREATE_QUIZ_BUNDLE));
   };
 
+  const handleSelectAllButtonClick = () => {
+    dispatch(selectAll());
+  };
+
   return (
     <S.QuizListModal>
       <div style={{ height: '60vh', overflow: 'scroll' }}>
@@ -67,6 +71,7 @@ export const QuizListModalContent = () => {
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <button onClick={handleCreateQuizButtonClick}>퀴즈 생성</button>
+        <button onClick={handleSelectAllButtonClick}>전체 선택</button>
         <button onClick={handleCreateQuizBundleButtonClick}>문제집 생성</button>
       </div>
     </S.QuizListModal>
