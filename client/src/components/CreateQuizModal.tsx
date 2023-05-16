@@ -19,6 +19,7 @@ function CreateQuizModalContent() {
   const { fields, append, remove } = useFieldArray({ control, name: 'answers' });
 
   const [quizType, setQuizType] = useState<QuizType>(QuizTypes.CONSONANT);
+  const [videoId, setVideoId] = useState('');
 
   const getQuestion = (type: QuizType, { consonant, videoId }) => {
     switch (type) {
@@ -30,7 +31,7 @@ function CreateQuizModalContent() {
   };
 
   const handleCreateQuiz = async (formData: FieldValues) => {
-    const { consonant, videoId } = formData;
+    const { consonant } = formData;
     const answers = [formData.defaultAnswer, ...formData.answers];
     const quiz: Quiz = { type: quizType, question: getQuestion(quizType, { consonant, videoId }), answers };
     const response = await httpPostApi('quiz', quiz);
@@ -43,6 +44,21 @@ function CreateQuizModalContent() {
     const { id } = await response.json();
 
     dispatch(addQuiz({ ...quiz, id }));
+  };
+
+  const handleVideoIdInputChange = (e: React.ChangeEvent) => {
+    const regex = /^https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([^&]+)/;
+    const target = e.target as HTMLInputElement;
+    let videoId = target.value;
+
+    const match = videoId.match(regex);
+
+    if (match) {
+      videoId = match[1];
+      target.value = videoId;
+    }
+
+    setVideoId(videoId);
   };
 
   return (
@@ -58,7 +74,7 @@ function CreateQuizModalContent() {
           setCurrentValue={(value: QuizType) => setQuizType(value)}
         />
         {quizType === QuizTypes.CONSONANT && <input {...register('consonant')} placeholder="초성" />}
-        {quizType === QuizTypes.MUSIC && <input {...register('videoId')} placeholder="비디오 ID" />}
+        {quizType === QuizTypes.MUSIC && <input onChange={handleVideoIdInputChange} value={videoId} placeholder="비디오 ID" />}
 
         <S.AnswerScoreInputRow>
           <input {...register(`defaultAnswer.answer`)} placeholder="정답" />
