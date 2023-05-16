@@ -40,7 +40,7 @@ function AddQuizModalContent() {
   return (
     <S.AddQuizModal>
       <div style={{ display: 'flex', width: '30vw' }}>
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, height: '60vh', overflow: 'scroll' }}>
           <h1>문제</h1>
           <div>
             {Object.values(quizzes).map((quiz) => {
@@ -53,7 +53,7 @@ function AddQuizModalContent() {
             })}
           </div>
         </div>
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, height: '60vh', overflow: 'scroll' }}>
           <h1>문제집</h1>
           <div>
             {Object.values(quizBundles).map((quizBundle) => {
