@@ -23,9 +23,9 @@ export const QuizListModal = ({ zIndex }: PreparedModalProps) => {
 
 export const QuizListModalContent = () => {
   const dispatch = useAppDispatch();
-  const { quizzes } = useAppSelector((state) => state.moz);
+  const { quizzes, selectedQuizBundle } = useAppSelector((state) => state.moz);
 
-  const quizList = Object.values(quizzes);
+  const quizList = selectedQuizBundle?.quizList ?? Object.values(quizzes);
 
   const handleCreateQuizButtonClick = () => {
     dispatch(openModal(ModalTypes.CREATE_QUIZ));
