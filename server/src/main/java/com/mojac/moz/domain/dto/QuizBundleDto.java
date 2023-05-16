@@ -15,11 +15,11 @@ public class QuizBundleDto {
 
     private Long id;
     private String title;
-    private List<QuizDto> quizzes;
+    private List<QuizDto> quizList;
 
     public QuizBundleDto(QuizBundle quizBundle) {
         this.id = quizBundle.getId();
         this.title = quizBundle.getTitle();
-        this.quizzes = quizBundle.getQuizzes().stream().map(quiz -> new QuizDto(quiz)).collect(Collectors.toList());
+        this.quizList = quizBundle.getQuizzes().stream().map(quiz -> new QuizDto(quiz)).collect(Collectors.toList());
     }
 }
