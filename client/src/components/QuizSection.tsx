@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../store';
 import * as S from './QuizSection.style';
 import { convertPayloadToChat, httpPostApi, sendMessage } from '../util';
@@ -7,27 +7,12 @@ import { openModal } from '../features/modalSlice';
 import { ModalTypes } from '../type/modal';
 import { Quiz, QuizTypes } from '../type/quiz';
 import YouTube from 'react-youtube';
+import { ChattingInput } from './ChattingInput';
 
 export const QuizRoomMainSection = () => {
   const dispatch = useAppDispatch();
-  const { socket, chatList, isReady, currentRoundQuiz } = useAppSelector((state) => state.moz);
-  const [chattingInputValue, setChattingInputValue] = useState('');
+  const { chatList, isReady, currentRoundQuiz } = useAppSelector((state) => state.moz);
   const chattingBoxRef = useRef(null);
-
-  const handleChattingInputChange = (e: React.ChangeEvent) => {
-    const target = e.target as HTMLInputElement;
-    setChattingInputValue(target.value);
-  };
-
-  const handleChattingInputKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key !== 'Enter') return;
-    if (chattingInputValue.length === 0) return;
-    if (e.nativeEvent.isComposing) return;
-
-    sendMessage({ type: 'chat/local', body: chattingInputValue }, socket);
-
-    setChattingInputValue('');
-  };
 
   useEffect(() => {
     const chattingBox = chattingBoxRef.current;
@@ -54,7 +39,7 @@ export const QuizRoomMainSection = () => {
           ))}
         </S.ChattingBox>
         <div>
-          <input style={{ width: '100%' }} value={chattingInputValue} onChange={handleChattingInputChange} onKeyDown={handleChattingInputKeyDown} />
+          <ChattingInput />
         </div>
       </S.ChattingSection>
     </S.QuizRoomMainSection>
