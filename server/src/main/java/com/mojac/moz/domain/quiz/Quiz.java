@@ -42,10 +42,17 @@ public class Quiz {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    private Long authorId;
+
     public Quiz(String question, List<Answer> answers, Member member, QuizType type) {
         this.question = question;
         this.answers = answers;
         this.member = member;
+        this.authorId = member.getId();
         this.type = type;
+    }
+
+    public void softDelete() {
+        this.member = null;
     }
 }

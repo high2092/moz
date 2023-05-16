@@ -38,6 +38,7 @@ public class QuizService {
 
     @Transactional
     public void deleteQuiz(Long id) {
-        quizRepository.deleteById(id);
+        Quiz quiz = quizRepository.findById(id).get();
+        quiz.softDelete();
     }
 }
