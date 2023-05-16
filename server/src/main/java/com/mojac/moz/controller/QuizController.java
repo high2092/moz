@@ -9,6 +9,7 @@ import com.mojac.moz.domain.quiz.Quiz;
 import com.mojac.moz.domain.quiz.QuizType;
 import com.mojac.moz.repository.MemberRepository;
 import com.mojac.moz.repository.QuizRepository;
+import com.mojac.moz.service.QuizBundleService;
 import com.mojac.moz.service.QuizService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class QuizController {
     private final MemberRepository memberRepository;
     private final QuizRepository quizRepository;
     private final QuizService quizService;
+    private final QuizBundleService quizBundleService;
 
     @GetMapping
     public GetQuizListResponse getQuizList(Authentication authentication) {
@@ -76,5 +78,4 @@ public class QuizController {
     static class CreateQuizResponse {
         private Long id;
     }
-
 }
