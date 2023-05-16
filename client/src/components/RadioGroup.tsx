@@ -14,10 +14,10 @@ export const RadioGroup = ({ name, options, currentValue, setCurrentValue }: Rad
   return (
     <fieldset>
       {options.map(({ value, label }) => (
-        <>
+        <div key={`${name}-fieldSet-${value}`}>
           <input name={name} type="radio" value={value} checked={value === currentValue} onChange={(e) => setCurrentValue(e.target.value)} />
           <label>{label}</label>
-        </>
+        </div>
       ))}
     </fieldset>
   );

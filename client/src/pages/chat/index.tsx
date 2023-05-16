@@ -86,7 +86,7 @@ const ChattingPage = () => {
       <div>
         <div>
           {roomList.map(({ id, name }) => (
-            <div key={id} onClick={() => handleRoomClick(id)}>
+            <div key={`room-${id}`} onClick={() => handleRoomClick(id)}>
               <div>{id}</div>
               <div>{name}</div>
             </div>

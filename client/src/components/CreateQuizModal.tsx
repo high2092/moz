@@ -67,7 +67,7 @@ function CreateQuizModalContent() {
         </S.AnswerScoreInputRow>
 
         {fields.map((field, index) => (
-          <div key={field.id}>
+          <div key={`answer-${field.id}`}>
             <S.AnswerScoreInputRow>
               <input {...register(`answers.${index}.answer`)} placeholder={`정답${index + 2}`} />
               <input {...register(`answers.${index}.score`)} placeholder="점수" />
