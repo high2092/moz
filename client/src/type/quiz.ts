@@ -10,6 +10,7 @@ export interface Quiz {
   type: QuizType;
   question: string;
   answers?: Answer[];
+  selected?: boolean;
 }
 
 interface Answer {

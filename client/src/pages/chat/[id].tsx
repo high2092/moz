@@ -1,4 +1,4 @@
-import * as S from '../../style/Room.style';
+import * as S from '../../styles/Room.style';
 
 import { useEffect, useState } from 'react';
 import { RoomUserSection } from '../../components/RoomUserSection';

@@ -1,12 +1,8 @@
 import styled from '@emotion/styled';
-import { MODAL_DEFAULT_BORDER_RADIUS } from '../../constants';
+import { modalStyle } from '../styles/modalStyle';
 
 export const QuizListModal = styled.div`
-  padding: 2rem;
-
-  background-color: white;
-
-  border-radius: ${MODAL_DEFAULT_BORDER_RADIUS};
+  ${modalStyle};
 `;
 
 export const DeleteButton = styled.div`

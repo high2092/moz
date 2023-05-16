@@ -70,7 +70,12 @@ export const mozSlice = createSlice({
     removeQuiz(state, action: PayloadAction<number>) {
       state.quizList = state.quizList.filter(({ id }) => id !== action.payload);
     },
+
+    toggleSelectQuiz(state, action: PayloadAction<number>) {
+      const target = state.quizList.find(({ id }) => id === action.payload);
+      target.selected = !target.selected;
+    },
   },
 });
 
-export const { initSocket, receiveMessage, ready, unready, fetchQuiz, addQuiz, removeQuiz } = mozSlice.actions;
+export const { initSocket, receiveMessage, ready, unready, fetchQuiz, addQuiz, removeQuiz, toggleSelectQuiz } = mozSlice.actions;

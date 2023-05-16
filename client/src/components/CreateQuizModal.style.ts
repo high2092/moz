@@ -1,17 +1,11 @@
 import styled from '@emotion/styled';
-import { MODAL_DEFAULT_BORDER_RADIUS } from '../../constants';
+import { modalStyle } from '../styles/modalStyle';
 
 export const CreateQuizModal = styled.div`
-  padding: 2rem;
+  ${modalStyle};
 `;
 
 export const CreateQuizForm = styled.form`
-  padding: 2rem;
-
-  background-color: white;
-
-  border-radius: ${MODAL_DEFAULT_BORDER_RADIUS};
-
   display: flex;
   flex-direction: column;
 `;

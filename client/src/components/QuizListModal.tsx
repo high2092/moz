@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../store';
 import { ModalTypes, PreparedModalProps } from '../type/modal';
 import { CenteredModal } from './Modal';
 import { httpDeleteApi } from '../util';
-import { removeQuiz } from '../features/mozSlice';
+import { removeQuiz, toggleSelectQuiz } from '../features/mozSlice';
 
 export const QuizListModal = ({ zIndex }: PreparedModalProps) => {
   return <CenteredModal content={<QuizListModalContent />} zIndex={zIndex} />;
@@ -28,14 +28,23 @@ export const QuizListModalContent = () => {
     dispatch(removeQuiz(id));
   };
 
+  const handleCreateQuizBundleButtonClick = () => {
+    if (!quizList.find(({ selected }) => selected)) {
+      alert('1개 이상의 퀴즈를 선택해야 해요.');
+      return;
+    }
+
+    dispatch(openModal(ModalTypes.CREATE_QUIZ_BUNDLE));
+  };
+
   return (
     <S.QuizListModal>
       <div style={{ height: '60vh', overflow: 'scroll' }}>
         {quizList.map((quiz) => {
-          const { id, question, answers } = quiz;
+          const { id, question, answers, selected } = quiz;
           return (
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div key={id}>
+            <div style={{ background: selected ? 'orange' : 'initial', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div key={id} onClick={() => dispatch(toggleSelectQuiz(id))}>
                 {id} {question} {answers[0].answer}
               </div>
               <S.DeleteButton onClick={() => handleDeleteButtonClick(id)}>삭제</S.DeleteButton>
@@ -43,8 +52,10 @@ export const QuizListModalContent = () => {
           );
         })}
       </div>
-
-      <button onClick={handleCreateQuizButtonClick}>퀴즈 생성</button>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <button onClick={handleCreateQuizButtonClick}>퀴즈 생성</button>
+        <button onClick={handleCreateQuizBundleButtonClick}>문제집 생성</button>
+      </div>
     </S.QuizListModal>
   );
 };
