@@ -114,7 +114,9 @@ public class Room {
     }
 
     public void addQuiz(List<Quiz> quizList) {
-        this.quizzes.addAll(quizList);
+        ArrayList<Quiz> copy = new ArrayList(quizList);
+        Collections.shuffle(copy);
+        this.quizzes.addAll(copy);
     }
 
     public void gameOver() {
